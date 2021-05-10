@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+    缓存这个东西
+    在 MyBatis 中分为两种缓存：一级缓存 、 二级缓存
+    一级缓存：
+        一级缓存是存放在 SqlSession 中的，也就是说，只有统一个 sqlSession 中才会有效
+        只有当一个 sqlSession 被关闭后，他的缓存才会被刷新到二级缓存中
+    二级缓存：
+        二级缓存的的作用域是统一个 Mapper，也就说说同一个 Mapper 下的所有 sqlSession 对象共享的
+    查询顺序：
+        当执行一个查询语句时，受限查看是否存在以及缓存，如果有直接返回，如果没有就查看二级缓存，如果有就返回，如果没有就进行数据库的查询
+    对数据库进行增删改操作会刷新缓存
+    更多信息请参考官方文档
+-->
+
+<mapper namespace="cn.happyOnion801.study.myBatis.dao.BookMapper">
+    <!--
+        同样的道理，resultMap 要和 resultMap 标签的 id 相对应
+        type=Book ，因为返回的列表的泛型就是 Book
+        Book 的 user 属性是一个对象类型，并不是基本类型或者 String，所以使用 association 标签
+        property 就是在 Book 对象中的属性名，javaType 是具体的 java 类型
+        在 association 中再使用 result 来映射属性名和字段名
+        我感觉这种方式是最好的，比较容易理解，有点像 Spring 的 bean 注入对象类型
+
+        如果存在两个状态相同的 Book 对象，那么将会合并对象，只返回一个结果
+    -->
+    <resultMap id="Book1" type="Book">
+        <result property="name" column="bname"/>
+        <association property="user" javaType="User">
+            <result property="name" column="uname"/>
+            <result property="age" column="uage"/>
+        </association>
+    </resultMap>
+    <select id="getList1" resultMap="Book1">
+        select b.name bname, u.name uname, u.age uage
+        from book b,
+             user u
+        where b.user = u.name
+    </select>
+
+    <!--========================== 我是分割线 ==========================-->
+
+    <!--
+        这种方式和上边的方式实现的功能是一样的
+        在 association 标签中，依旧使用 property 和 column 来映射属性名和字段名
+        通过 javaType 来制定该字段具体的 java 类型
+        通过 select 来指定一个 sql 语句的 id，来设置该字段的对象
+        在 select 子句的占位符参数来源与父查询的列名
+
+        子 select 语句因该是一个行子查询，不然会提示 [Cause: org.apache.ibatis.executor.ExecutorException: Statement returned more than one row, where no more than one was expected.]
+        由于缓存的存在，进行子查询时只有第一次是进行真正查询的，后面的查询只要是缓存没有被刷新，就不是真正的从数据库中查询
+        所以用这种方式进行查询，每次执行的子查询都是一样的，所以如果是通一个 User 对象，返回的对象是同一个
+    -->
+    <select id="selectUser" resultType="User">
+        select * from user where name = #{user};
+    </select>
+
+    <resultMap id="Book2" type="Book">
+        <result property="name" column="name"/>
+        <association property="user" column="user" javaType="User" select="selectUser"/>
+    </resultMap>
+
+    <select id="getList2" resultMap="Book2">
+        select name,user from book
+    </select>
+</mapper>

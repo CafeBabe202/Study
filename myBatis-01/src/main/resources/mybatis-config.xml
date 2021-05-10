@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <!--
+        可以使用properties来声明配置
+        使用resource来引用外置的配置文件
+        可以使用property标签来注册新的属性变量
+        如果在配置文件和标签中出现同名的变量则使用配置文件中的值
+    -->
+    <properties resource="db.properties">
+        <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url"
+                  value="jdbc:mysql://localhost:3306/spring?useSSL=false&amp;setUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC&amp;writeBatchedStatements=true"/>
+        <property name="password" value="123456"/>
+    </properties>
+
+    <!--
+        settings 标签用来对 myBatis 进行配置
+        通过name是配置的名字，value 是个配置的取值
+        具体的配置名和取值请参见官方文档
+    -->
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
+
+    <!--
+        设置别名
+        可以用typeAlias来设置具体某一个类的别名
+        可以使用package来设置一个包下的所有别名，默认是首字母小写的类名，可以使用@Alias来设置包这种配置方式的具体别名
+        myBatis有一些默认的别名，int -> _int , Integer -> int
+        具体的信息请参考官方文档
+    -->
+    <typeAliases>
+        <typeAlias type="cn.happyOnion801.study.myBatis.pojo.User" alias="User"/>
+        <typeAlias type="cn.happyOnion801.study.myBatis.pojo.Book" alias="Book"/>
+        <package name="cn.happyOnion801.study.myBatis.pojo"/>
+    </typeAliases>
+
+    <!--
+        在environments中可以配置多个不同的环境
+        每一个环境都有一个id，可以使用default来选择一个环境
+    -->
+    <environments default="development">
+        <!--
+            transactionManager的属性值有 JDBC | MANAGED 两个，默认是JDBC，另一个要知道
+            dataSource的属性值有 UNPOOLED | POOLED | JNDI 三个，默认是POOLED，另外零个要知道
+        -->
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${driver}"/>
+                <property name="url" value="${url}"/>
+                <property name="username" value="${username}"/>
+                <property name="password" value="${password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--
+        映射器的配置有四种方式，但是有url的方式不建议使用，只讲解三种方式
+        方式一：
+            resource 用资源文件的全限定名来指定一个资源文件
+        方式二：
+            class 使用接口类的类路径来注册一个映射器，但是xml文件名和接口类名应该一应并且处于同一个包下
+        方式三：
+            package 使用package标签来注册同一个包下的所有xml文件
+    -->
+    <mappers>
+        <package name="cn.happyOnion801.study.myBatis.dao"/>
+    </mappers>
+</configuration>

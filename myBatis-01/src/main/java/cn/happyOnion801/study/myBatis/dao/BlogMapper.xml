@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.happyOnion801.study.myBatis.dao.BlogMapper">
+
+    <!--
+        动态SQL语句，这一部分卡上去好像挺难的，但是也不是很难，多写写就行了，也没啥，有点像脚本
+        更多内容请看官方文档
+        注意一下模糊查询的写法 % 号要用 “ 引起来
+    -->
+
+    <select id="getBlog" parameterType="map" resultType="Blog">
+        select * from blog
+        <where>
+                <if test="title!=null">
+                    title like "%"#{title}"%"
+                </if>
+                <if test="authors!=null">
+                    and author in
+                    <foreach collection="authors" item="aut" open="(" separator="," close=")">
+                        #{aut}
+                    </foreach>
+                </if>
+        </where>
+    </select>
+</mapper>

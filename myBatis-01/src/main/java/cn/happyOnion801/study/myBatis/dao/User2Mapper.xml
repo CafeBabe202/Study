@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.happyOnion801.study.myBatis.dao.User2Mapper">
+
+    <!--
+       通过 collection 来指定一个属性是一个集合，然后设置每一个对象的映射
+       ofType 来指定集合的泛型类型
+    -->
+    <resultMap id="user1" type="User2">
+        <result property="name" column="uname"/>
+        <result property="age" column="uage"/>
+        <collection property="books" ofType="Book">
+            <result property="name" column="bname"/>
+        </collection>
+    </resultMap>
+    <select id="getUser1" resultMap="user1">
+        select u.name uname,u.age uage,b.name bname from user u,book b where u.name = b.user;
+    </select>
+
+    <!--==================== 我是分割线 ====================-->
+
+    <!--
+        同样是通过 collection 来制定一个集合类型的属性值
+        通过 javaType 来指定集合的类型，通过 ofType 来指定泛型的类型，通过 select 来关联一个子查询语句
+        column 来指定一个相对应的列，我感觉有点像传参
+    -->
+    <select id="getBook" resultType="Book">
+        select * from book where user = #{name}
+    </select>
+    <resultMap id="user2" type="User2">
+        <result property="name" column="name"/>
+        <result property="age" column="age"/>
+        <collection property="books" javaType="ArrayList" ofType="Book" select="getBook" column="name"/>
+    </resultMap>
+    <select id="getUser2" resultMap="user2">
+        select * from user
+    </select>
+
+</mapper>

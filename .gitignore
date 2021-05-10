@@ -1,0 +1,4 @@
+# Project exclude paths
+/myBatis-01/target/
+/spring-01/target/
+/ssm/target/

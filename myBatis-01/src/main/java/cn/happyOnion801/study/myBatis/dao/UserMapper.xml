@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace就是Dao接口所对应的全类名-->
+<mapper namespace="cn.happyOnion801.study.myBatis.dao.UserMapper">
+
+    <!--
+        如果 pojo 类的属性名和数据库的字段名不统一，可以使用 resultMap 的方式来进行统一
+        每一个 resultMap 对应一个 id ，sql 标签应该使用 resultMap 来指定一个映射器
+        resultMap 使用 type 来指定类型
+    -->
+    <resultMap id="UserMapper" type="User">
+        <result column="name" property="username"/>
+    </resultMap>
+
+    <!--id是namespace对应的类的方法名
+        resultType的类型是返回集合的泛型的全类名
+        中间是要执行的sql语句
+        parameterType是参数的类型
+        在sql是用#{变量名}来充当占位符
+        对于对象类型可以直接使用属性名来充当占位符变量
+        可以通过Map来传递一个键值对
+    -->
+    <!--
+        注意不能出现有同名的函数，即使参数不同也不行，在xml中会出错
+    -->
+    <select id="getUserList" resultMap="UserMapper">
+        select *
+        from user
+    </select>
+
+    <select id="getUserByName" resultMap="UserMapper" parameterType="String">
+        select *
+        from user
+        where name = #{name}
+    </select>
+
+    <select id="getUserByNameLike" resultMap="UserMapper">
+        select *
+        from user
+        where name like #{name}"%"
+    </select>
+
+    <insert id="insertUser" parameterType="User">
+        insert into user(name, age) value (#{name},#{age})
+    </insert>
+
+    <insert id="insertUserByMap" parameterType="map">
+        insert into user(name, age) value (#{姓名},#{年龄})
+    </insert>
+
+    <update id="updateUserByName" parameterType="User">
+        update user
+        set age = #{age}
+        where name = #{name};
+    </update>
+
+</mapper>
