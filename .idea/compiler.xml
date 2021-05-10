@@ -10,6 +10,7 @@
         <module name="spring-01" />
         <module name="ssm" />
         <module name="myBatis-01" />
+        <module name="springBoot" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
