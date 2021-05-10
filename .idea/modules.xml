@@ -5,7 +5,6 @@
       <module fileurl="file://$PROJECT_DIR$/Study.iml" filepath="$PROJECT_DIR$/Study.iml" />
       <module fileurl="file://$PROJECT_DIR$/myBatis-01/myBatis-01.iml" filepath="$PROJECT_DIR$/myBatis-01/myBatis-01.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring-01/spring-01.iml" filepath="$PROJECT_DIR$/spring-01/spring-01.iml" />
-      <module fileurl="file://$PROJECT_DIR$/springBoot/springBoot.iml" filepath="$PROJECT_DIR$/springBoot/springBoot.iml" />
       <module fileurl="file://$PROJECT_DIR$/ssm/ssm.iml" filepath="$PROJECT_DIR$/ssm/ssm.iml" />
     </modules>
   </component>
