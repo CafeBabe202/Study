@@ -3,6 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!--两种一对多关系查询-->
+
 <!--
     缓存这个东西
     在 MyBatis 中分为两种缓存：一级缓存 、 二级缓存
@@ -58,12 +60,10 @@
     <select id="selectUser" resultType="User">
         select * from user where name = #{user};
     </select>
-
     <resultMap id="Book2" type="Book">
         <result property="name" column="name"/>
         <association property="user" column="user" javaType="User" select="selectUser"/>
     </resultMap>
-
     <select id="getList2" resultMap="Book2">
         select name,user from book
     </select>

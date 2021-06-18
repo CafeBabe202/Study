@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<!--namespace就是Dao接口所对应的全类名-->
+<!-- namespace 就是 Dao 接口所对应的全类名-->
 <mapper namespace="cn.happyOnion801.study.myBatis.dao.UserMapper">
 
     <!--
@@ -14,16 +14,16 @@
         <result column="name" property="username"/>
     </resultMap>
 
-    <!--id是namespace对应的类的方法名
-        resultType的类型是返回集合的泛型的全类名
-        中间是要执行的sql语句
-        parameterType是参数的类型
-        在sql是用#{变量名}来充当占位符
+    <!--id 是 namespace 对应的类的方法名
+        resultType 的类型是返回集合的泛型的全类名
+        中间是要执行的 sql 语句
+        parameterType 是参数的类型
+        在 sql 是用 #{变量名} 来充当占位符
         对于对象类型可以直接使用属性名来充当占位符变量
-        可以通过Map来传递一个键值对
+        可以通过 Map 来传递一个键值对
     -->
     <!--
-        注意不能出现有同名的函数，即使参数不同也不行，在xml中会出错
+        注意不能出现有同名的函数，即使参数不同也不行，在 xml 中会出错
     -->
     <select id="getUserList" resultMap="UserMapper">
         select *

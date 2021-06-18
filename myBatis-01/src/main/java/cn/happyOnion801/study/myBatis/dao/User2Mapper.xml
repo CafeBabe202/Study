@@ -3,15 +3,21 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
+<!--两种多对对一关系映射-->
+
 <mapper namespace="cn.happyOnion801.study.myBatis.dao.User2Mapper">
+
+    <!--将两个查询都要用的部分抽取出来，将两个子 resultMap 继承这个 resultMap-->
+    <resultMap id="user" type="user2">
+        <result property="name" column="uname"/>
+        <result property="age" column="uage"/>
+    </resultMap>
 
     <!--
        通过 collection 来指定一个属性是一个集合，然后设置每一个对象的映射
        ofType 来指定集合的泛型类型
     -->
-    <resultMap id="user1" type="User2">
-        <result property="name" column="uname"/>
-        <result property="age" column="uage"/>
+    <resultMap id="user1" type="User2" extends="user">
         <collection property="books" ofType="Book">
             <result property="name" column="bname"/>
         </collection>
@@ -35,9 +41,7 @@
         from book
         where user = #{name}
     </select>
-    <resultMap id="user2" type="User2">
-        <result property="name" column="name"/>
-        <result property="age" column="age"/>
+    <resultMap id="user2" type="User2" extends="user">
         <collection property="books" javaType="ArrayList" ofType="Book" select="getBook" column="name"/>
     </resultMap>
     <select id="getUser2" resultMap="user2">

@@ -1,12 +1,15 @@
-package cn.happyOnion801.study.myBatis.dao;
+package cn.happyOnion801.study.myBatis.test.dao;
 
+import cn.happyOnion801.study.myBatis.dao.BlogMapper;
+import cn.happyOnion801.study.myBatis.dao.BookMapper;
+import cn.happyOnion801.study.myBatis.dao.User2Mapper;
+import cn.happyOnion801.study.myBatis.dao.UserMapper;
 import cn.happyOnion801.study.myBatis.pojo.Book;
 import cn.happyOnion801.study.myBatis.pojo.User;
 import cn.happyOnion801.study.myBatis.utils.MyBatisUtils;
 import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
-import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import java.util.ArrayList;

@@ -22,14 +22,14 @@
         通过name是配置的名字，value 是个配置的取值
         具体的配置名和取值请参见官方文档
     -->
-<!--    <settings>-->
-<!--        <setting name="logImpl" value="LOG4J"/>-->
-<!--    </settings>-->
+    <settings>
+        <setting name="logImpl" value="LOG4J"/>
+    </settings>
 
     <!--
         设置别名
         可以用typeAlias来设置具体某一个类的别名
-        可以使用package来设置一个包下的所有别名，默认是首字母小写的类名，可以使用@Alias来设置包这种配置方式的具体别名
+        可以使用package来设置一个包下的所有类的别名，默认是首字母小写的类名，可以使用@Alias来设置这种配置方式的具体别名
         myBatis有一些默认的别名，int -> _int , Integer -> int
         具体的信息请参考官方文档
     -->
