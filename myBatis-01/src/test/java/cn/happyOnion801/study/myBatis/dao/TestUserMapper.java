@@ -21,6 +21,18 @@ public class TestUserMapper {
     @Test
     public void getUserList() {
         SqlSession session = MyBatisUtils.getSqlSession();
+        /**
+         * SqlSession 是一个 DefaultSqlSession 类，由 DefaultSqlSessionFactory 创建
+         *
+         * 获取代理对象时，首先调用 Configuration.mapperRegistry 的
+         *      getMapper(Class<T> type, SqlSession sqlSession)
+         *      该方法会创建一个 MapperProxyFactory<T> 并调用
+         *      T newInstance(SqlSession sqlSession)
+         *          mapperProxy = new MapperProxy<>(sqlSession, mapperInterface, methodCache)
+         *      T newInstance(MapperProxy<T> mapperProxy)
+         *      Proxy.newProxyInstance(mapperInterface.getClassLoader(), new Class[] { mapperInterface }, mapperProxy)
+         *      MapperProxy<T> 实现了 InvocationHandler 接口
+         */
         UserMapper mapper = session.getMapper(UserMapper.class);
         List<User> userList = mapper.getUserList();
         userList.forEach(System.out::println);
@@ -31,7 +43,7 @@ public class TestUserMapper {
     public void getUserByName() {
         SqlSession session = MyBatisUtils.getSqlSession();
         UserMapper mapper = session.getMapper(UserMapper.class);
-        User user = mapper.getUserByName("张浩");
+        User user = mapper.getUserByName("卢亚男");
         System.out.println(user);
         session.close();//记得关闭资源
     }
@@ -49,7 +61,7 @@ public class TestUserMapper {
     public void insertUser() {
         SqlSession session = MyBatisUtils.getSqlSession();
         UserMapper mapper = session.getMapper(UserMapper.class);
-        mapper.insertUser(new User("卢亚男", 22));
+        mapper.insertUser(new User("张浩", 22));
         session.commit();//注意增删改方法一定要进行事物的提交
         session.close();//记得关闭资源
     }

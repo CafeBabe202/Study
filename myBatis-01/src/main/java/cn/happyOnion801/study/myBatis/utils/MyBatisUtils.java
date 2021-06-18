@@ -33,13 +33,51 @@ public class MyBatisUtils {
         try {
             String resource = "mybatis-config.xml";
             InputStream inputStream = Resources.getResourceAsStream(resource);
-            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+            /**
+             * 建造者模式
+             * 创建一个 SqlSessionFactoryBuilder 用于创建 SqlSessionFactory
+             */
+            SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
+            /**
+             * SqlSessionFactoryBuilder通过Build方法传入一个流对象
+             *
+             * 调用 SqlSessionFactoryBuilder 的
+             *      SqlSessionFactory build(InputStream inputStream, String environment, Properties properties)
+             *      environment 和 properties 使用 null
+             *
+             * 然后，使用 environment 和 properties 通过
+             *      XMLConfigBuilder(InputStream inputStream, String environment, Properties props)
+             *      XMLConfigBuilder(XPathParser parser, String environment, Properties props)
+             *      方法来创建一个 XMLConfigBuilder 对象来解析 xml 文件
+             *      XPathParser 和 XNode 真正封装了解析 xml 文件的工作，
+             *
+             * XMLConfigBuilder 的
+             *      Configuration parse()
+             *      void parseConfiguration(XNode root)
+             *      负责解析 xml 文件，并标记一个文件是否解析过，如果解析过 将提示 "Each XMLConfigBuilder can only be used once."
+             *      解析完成后，将返回一个 Configuration 对象，这个对象包含了 Environment 等其他环境相关的信息
+             *
+             * 最后，将这个 Configuration 赋值给 SqlSessionFactory 对象并返回
+             */
+            sqlSessionFactory = sqlSessionFactoryBuilder.build(inputStream);
         }catch (Exception e){
             e.printStackTrace();
         }
     }
 
     public static SqlSession getSqlSession(){
+        /**
+         * SqlSession 实际上一个 DefaultSqlSessionFactory 对象，由 SqlSessionFactoryBuilder 的
+         *      SqlSessionFactory build(Configuration config)
+         *      方法通过 XPathParser 解析出来的 Configuration 创建
+         *
+         * sqlSessionFactory 的
+         *      SqlSession openSession()
+         *      this.openSessionFromDataSource(this.configuration.getDefaultExecutorType(), (TransactionIsolationLevel)null, false)
+         *          Executor executor = this.configuration.newExecutor(tx, execType)
+         *      new DefaultSqlSession(this.configuration, executor, autoCommit)
+         *      executor 能够通过 Configuration 中的 Environment 从数据库连接池中获取 Statement 执行 sql
+         */
         return sqlSessionFactory.openSession();
     }
 }

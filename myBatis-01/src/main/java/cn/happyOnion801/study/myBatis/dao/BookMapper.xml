@@ -30,8 +30,8 @@
     -->
     <resultMap id="Book1" type="Book">
         <result property="name" column="bname"/>
-        <association property="user" javaType="User">
-            <result property="name" column="uname"/>
+        <association property="user" javaType="user">
+            <result property="username" column="uname"/>
             <result property="age" column="uage"/>
         </association>
     </resultMap>

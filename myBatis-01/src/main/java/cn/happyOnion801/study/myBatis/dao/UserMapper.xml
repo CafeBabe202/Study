@@ -30,7 +30,7 @@
         from user
     </select>
 
-    <select id="getUserByName" resultMap="UserMapper" parameterType="String">
+    <select id="getUserByName" resultMap="UserMapper" parameterType="String" resultType="user">
         select *
         from user
         where name = #{name}
@@ -39,11 +39,11 @@
     <select id="getUserByNameLike" resultMap="UserMapper">
         select *
         from user
-        where name like #{name}"%"
+        where name like #{username}"%"
     </select>
 
     <insert id="insertUser" parameterType="User">
-        insert into user(name, age) value (#{name},#{age})
+        insert into user(name, age) value (#{username},#{age})
     </insert>
 
     <insert id="insertUserByMap" parameterType="map">
@@ -53,7 +53,7 @@
     <update id="updateUserByName" parameterType="User">
         update user
         set age = #{age}
-        where name = #{name};
+        where name = #{username};
     </update>
 
 </mapper>

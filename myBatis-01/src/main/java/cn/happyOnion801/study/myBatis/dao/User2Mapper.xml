@@ -17,7 +17,10 @@
         </collection>
     </resultMap>
     <select id="getUser1" resultMap="user1">
-        select u.name uname,u.age uage,b.name bname from user u,book b where u.name = b.user;
+        select u.name uname, u.age uage, b.name bname
+        from user u,
+             book b
+        where u.name = b.user;
     </select>
 
     <!--==================== 我是分割线 ====================-->
@@ -28,7 +31,9 @@
         column 来指定一个相对应的列，我感觉有点像传参
     -->
     <select id="getBook" resultType="Book">
-        select * from book where user = #{name}
+        select *
+        from book
+        where user = #{name}
     </select>
     <resultMap id="user2" type="User2">
         <result property="name" column="name"/>
@@ -36,7 +41,8 @@
         <collection property="books" javaType="ArrayList" ofType="Book" select="getBook" column="name"/>
     </resultMap>
     <select id="getUser2" resultMap="user2">
-        select * from user
+        select *
+        from user
     </select>
 
 </mapper>

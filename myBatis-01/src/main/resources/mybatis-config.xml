@@ -13,7 +13,7 @@
     <properties resource="db.properties">
         <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
         <property name="url"
-                  value="jdbc:mysql://localhost:3306/spring?useSSL=false&amp;setUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC&amp;writeBatchedStatements=true"/>
+                  value="jdbc:mysql://localhost:3306/study?useSSL=false&amp;setUnicode=true&amp;characterEncoding=utf8&amp;serverTimezone=UTC&amp;writeBatchedStatements=true"/>
         <property name="password" value="123456"/>
     </properties>
 
@@ -22,9 +22,9 @@
         通过name是配置的名字，value 是个配置的取值
         具体的配置名和取值请参见官方文档
     -->
-    <settings>
-        <setting name="logImpl" value="LOG4J"/>
-    </settings>
+<!--    <settings>-->
+<!--        <setting name="logImpl" value="LOG4J"/>-->
+<!--    </settings>-->
 
     <!--
         设置别名
@@ -34,8 +34,8 @@
         具体的信息请参考官方文档
     -->
     <typeAliases>
-        <typeAlias type="cn.happyOnion801.study.myBatis.pojo.User" alias="User"/>
-        <typeAlias type="cn.happyOnion801.study.myBatis.pojo.Book" alias="Book"/>
+        <typeAlias type="cn.happyOnion801.study.myBatis.pojo.User" alias="user"/>
+        <typeAlias type="cn.happyOnion801.study.myBatis.pojo.Book" alias="book"/>
         <package name="cn.happyOnion801.study.myBatis.pojo"/>
     </typeAliases>
 
