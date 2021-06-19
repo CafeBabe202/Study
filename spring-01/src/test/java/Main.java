@@ -1,8 +1,5 @@
 import cn.happyonion801.study.spring.aop.UserDaoImpl;
-import cn.happyonion801.study.spring.bean.Book;
-import cn.happyonion801.study.spring.bean.Emp;
-import cn.happyonion801.study.spring.bean.Orders;
-import cn.happyonion801.study.spring.bean.Stu;
+import cn.happyonion801.study.spring.bean.*;
 import cn.happyonion801.study.spring.bean.dao.UserDao;
 import cn.happyonion801.study.spring.bean.dao.UserService;
 import cn.happyonion801.study.spring.config.Aop;
@@ -18,6 +15,13 @@ public class Main {
         ApplicationContext context = new ClassPathXmlApplicationContext("bean.xml");
         Book book = context.getBean("book1", Book.class);
         System.out.println(book);
+    }
+
+    @Test
+    public void factory(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("bean.xml");
+        System.out.println(context.getBean("reader1", Reader.class));
+        System.out.println(context.getBean("reader2", Reader.class));
     }
 
     @Test //使用构造器进行属性注入

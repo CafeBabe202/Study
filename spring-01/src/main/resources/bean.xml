@@ -14,8 +14,26 @@
     name： 作用与id相似，name中可以添加特殊符号，但是id不能    ==不常用，现在用id==
     -->
     <!--默认使用无参构造-->
-    <bean id="user" class="cn.happyonion801.study.spring.bean.User"></bean>
+    <bean id="user" class="cn.happyonion801.study.spring.bean.User"/>
 
+    <!--
+        这是一个声明一个工厂类对象，spring并不会创建他的对象，但是你可以使用你自己的工厂来创建bean对象
+        使用factory-method来声明使用这个方法来创建对象，该方法必须是static方法
+    -->
+    <bean id="ChineseBook" class="cn.happyonion801.study.spring.factory.BookFactory" factory-method="getChineseBook"/>
+    <!--没错，你可以声明两个方法来创创建两种不同的bean-->
+    <bean id="EnglishBook" class="cn.happyonion801.study.spring.factory.BookFactory" factory-method="getEnglishBook"/>
+
+    <!--创建一个read对象-->
+    <bean id="reader1" class="cn.happyonion801.study.spring.bean.Reader">
+        <!--配置book属性，指定使用刚刚声明的bookFactory创建对象-->
+        <property name="book" ref="ChineseBook"/>
+    </bean>
+    <!--然后来使用不同的方法创建不同的bean对象-->
+    <bean id="reader2" class="cn.happyonion801.study.spring.bean.Reader">
+        <!--配置book属性，指定使用刚刚声明的bookFactory创建对象-->
+        <property name="book" ref="EnglishBook"/>
+    </bean>
 
     <!--属性注入-->
     <!--DI是IOC的具体实现，就是注入属性-->
@@ -25,30 +43,30 @@
         name : 属性名
         value : 注入的值
         -->
-        <property name="name" value="书名1"></property>
-        <property name="author" value="张浩"></property>
+        <property name="name" value="书名1"/>
+        <property name="author" value="张浩"/>
     </bean>
     <!--使用构造器进行注入-->
     <bean id="book2" class="cn.happyonion801.study.spring.bean.Book">
-        <constructor-arg name="name" value="书名2"></constructor-arg>
-        <constructor-arg name="author" value="张浩"></constructor-arg>
+        <constructor-arg name="name" value="书名2"/>
+        <constructor-arg name="author" value="张浩"/>
     </bean>
     <!--使用set进行注入：简化：了解-->
     <!--前提：在配置中添加命名空间-->
-    <bean id="book3" class="cn.happyonion801.study.spring.bean.Book" p:name="书名3" p:author="张浩"></bean>
+    <bean id="book3" class="cn.happyonion801.study.spring.bean.Book" p:name="书名3" p:author="张浩"/>
 
     <!--字面量： 使用固定值-->
     <!--设置null-->
     <bean id="book4" class="cn.happyonion801.study.spring.bean.Book">
-        <property name="name" value="书名4"></property>
+        <property name="name" value="书名4"/>
         <property name="author">
-            <null></null>
+            <null/>
         </property>
     </bean>
     <!--设置包含特殊符号的值-->
     <bean id="book5" class="cn.happyonion801.study.spring.bean.Book">
         <!--使用转义符号-->
-        <property name="name" value="&lt;&lt;书名5&gt;&gt;"></property>
+        <property name="name" value="&lt;&lt;书名5&gt;&gt;"/>
         <!--使用CDATA-->
         <property name="author">
             <value><![CDATA[<<张浩>>]]]></value>
@@ -56,33 +74,33 @@
     </bean>
     <!--注入外部bean-->
     <bean id="user1" class="cn.happyonion801.study.spring.bean.User">
-        <property name="name" value="张浩"></property>
+        <property name="name" value="张浩"/>
     </bean>
     <bean id="book6" class="cn.happyonion801.study.spring.bean.Book">
-        <property name="name" value="书名6"></property>
-        <property name="author" value="张浩"></property>
-        <property name="user" ref="user1"></property>
+        <property name="name" value="书名6"/>
+        <property name="author" value="张浩"/>
+        <property name="user" ref="user1"/>
     </bean>
     <!--注入内部bean-->
     <bean id="emp1" class="cn.happyonion801.study.spring.bean.Emp">
-        <property name="name" value="张浩"></property>
-        <property name="gender" value="男"></property>
+        <property name="name" value="张浩"/>
+        <property name="gender" value="男"/>
         <property name="dept">
             <bean id="dept1" class="cn.happyonion801.study.spring.bean.Dept">
-                <property name="name" value="财务部"></property>
+                <property name="name" value="财务部"/>
             </bean>
         </property>
     </bean>
     <!--级联赋值-->
     <bean id="dept2" class="cn.happyonion801.study.spring.bean.Dept">
-        <property name="name" value="安保部"></property>
+        <property name="name" value="安保部"/>
     </bean>
     <bean id="emp2" class="cn.happyonion801.study.spring.bean.Emp">
-        <property name="name" value="张浩"></property>
-        <property name="gender" value="男"></property>
-        <property name="dept" ref="dept2"></property>
+        <property name="name" value="张浩"/>
+        <property name="gender" value="男"/>
+        <property name="dept" ref="dept2"/>
         <!--要设置Emp的getDept方法才行，只有可以获取dept才能进行赋值-->
-        <property name="dept.name" value="技术部"></property>
+        <property name="dept.name" value="技术部"/>
     </bean>
     <!--注入集合-->
     <bean id="stu1" class="cn.happyonion801.study.spring.bean.Stu">
@@ -110,17 +128,17 @@
         <!--注入map-->
         <property name="map">
             <map>
-                <entry key="k1" value="v1"></entry>
-                <entry key="k2" value="v2"></entry>
+                <entry key="k1" value="v1"/>
+                <entry key="k2" value="v2"/>
             </map>
         </property>
     </bean>
     <!--在集合中注入对象-->
     <bean id="stu2" class="cn.happyonion801.study.spring.bean.Stu">
-        <property name="list" ref="list"></property>
+        <property name="list" ref="list"/>
         <property name="books">
             <list>
-                <ref bean="book1"></ref>
+                <ref bean="book1"/>
             </list>
         </property>
     </bean>
@@ -142,7 +160,7 @@
         创建一个bean，实现FactoryBean
         实现接口中的方法，在实现的方法中定义返回值
     -->
-    <bean id="myBean1" class="cn.happyonion801.study.spring.bean.MyBean"></bean>
+    <bean id="myBean1" class="cn.happyonion801.study.spring.bean.MyBean"/>
 
     <!--bean的作用域： 可以设置是单实例还是多实例对象；默认是单实例对象==获取多个对象的地址相同==-->
     <!--scope属性值
@@ -152,7 +170,7 @@
         session
     -->
     <!--设置多实例对象-->
-    <bean id="book7" class="cn.happyonion801.study.spring.bean.Book" scope="prototype"></bean>
+    <bean id="book7" class="cn.happyonion801.study.spring.bean.Book" scope="prototype"/>
 
     <!--bean的生命周期：==从对象创建到销毁的生命周期==
         1、通过构造器创建对象
@@ -164,7 +182,7 @@
     <!--演示bean的生敏周期-->
     <bean id="orders1" class="cn.happyonion801.study.spring.bean.Orders" init-method="initMethod"
           destroy-method="destroyMethod">
-        <property name="name" value="phone"></property>
+        <property name="name" value="phone"/>
     </bean>
     <!--bean的后置处理器 ==添加后置处理后的生命周期==
         1、通过构造器创建对象
@@ -181,7 +199,7 @@
         2、实现方法
     -->
     <!--配置后置处理器 ==创建后置处理器后会为所有对象都使用后置处理器== -->
-    <bean id="myBeanPost1" class="cn.happyonion801.study.spring.bean.MyBeanPost"></bean>
+    <bean id="myBeanPost1" class="cn.happyonion801.study.spring.bean.MyBeanPost"/>
 
     <!--自动装配-->
     <!--什么是自动装配
@@ -193,9 +211,9 @@
     -->
     <!--演示-->
     <bean id="dept" class="cn.happyonion801.study.spring.bean.Dept">
-        <property name="name" value="自动注入"></property>
+        <property name="name" value="自动注入"/>
     </bean>
-    <bean id="emp3" class="cn.happyonion801.study.spring.bean.Emp" autowire="byName"></bean>
+    <bean id="emp3" class="cn.happyonion801.study.spring.bean.Emp" autowire="byName"/>
 
     <!--bean管理-->
     <!--引入外部properties文件
@@ -206,10 +224,10 @@
     -->
     <!--演示-->
     <context:property-placeholder location="classpath:demo.properties"
-                                  file-encoding="UTF-8"></context:property-placeholder>
+                                  file-encoding="UTF-8"/>
     <bean id="book8" class="cn.happyonion801.study.spring.bean.Book">
-        <property name="name" value="${bookName}"></property>
-        <property name="author" value="${authorName}"></property>
+        <property name="name" value="${bookName}"/>
+        <property name="author" value="${authorName}"/>
     </bean>
 
     <!--什么是注解
@@ -231,7 +249,7 @@
     <!--开启组件扫描-->
     <!--想要扫描多个包，可以使用逗号分开-->
     <context:component-scan
-            base-package="cn.happyonion801.study.spring.bean.scan,cn.happyonion801.study.spring.bean.dao"></context:component-scan>
+            base-package="cn.happyonion801.study.spring.bean.dao"/>
     <!--组件扫面的细节配置
         use-default-filters="false" 设置默认全部不扫描
         context:include-filter 设置扫描那些
