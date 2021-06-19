@@ -160,4 +160,17 @@ public class TestUserMapper {
         map.put("title","java");
         mapper.getBlog(map).forEach(System.out::println);
     }
+
+    @Test
+    public void twoCache(){
+        SqlSession session = MyBatisUtils.getSqlSession();
+        UserMapper mapper = session.getMapper(UserMapper.class);
+        mapper.getUserList().forEach(System.out::println);
+        session.commit();
+        session.close();
+
+        session = MyBatisUtils.getSqlSession();
+        mapper = session.getMapper(UserMapper.class);
+        mapper.getUserList().forEach(System.out::println);
+    }
 }

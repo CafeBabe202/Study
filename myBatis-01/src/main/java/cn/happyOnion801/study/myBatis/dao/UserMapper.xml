@@ -5,6 +5,8 @@
 <!-- namespace 就是 Dao 接口所对应的全类名-->
 <mapper namespace="cn.happyOnion801.study.myBatis.dao.UserMapper">
 
+    <cache type="cn.happyOnion801.study.myBatis.utils.MyCache"/>
+
     <!--
         如果 pojo 类的属性名和数据库的字段名不统一，可以使用 resultMap 的方式来进行统一
         每一个 resultMap 对应一个 id ，sql 标签应该使用 resultMap 来指定一个映射器
@@ -30,7 +32,7 @@
         from user
     </select>
 
-    <select id="getUserByName" resultMap="UserMapper" parameterType="String" resultType="user">
+    <select id="getUserByName" resultMap="UserMapper" parameterType="String" resultType="user" useCache="false">
         select *
         from user
         where name = #{name}

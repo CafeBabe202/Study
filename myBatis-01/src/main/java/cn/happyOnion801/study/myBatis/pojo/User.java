@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.log4j.Log4j;
 
+import java.io.Serializable;
+
 /**
  * 使用 Lombok 注解进行自动生成一些方法
  * 具体的注解请参见 google
@@ -13,7 +15,7 @@ import lombok.extern.log4j.Log4j;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User implements Serializable {
     private String username;
     private int age;
 }
