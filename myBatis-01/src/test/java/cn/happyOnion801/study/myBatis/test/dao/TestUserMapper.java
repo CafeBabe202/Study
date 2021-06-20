@@ -11,7 +11,12 @@ import lombok.extern.log4j.Log4j;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSession;
 import org.junit.Test;
+import org.mybatis.generator.api.MyBatisGenerator;
+import org.mybatis.generator.config.Configuration;
+import org.mybatis.generator.config.xml.ConfigurationParser;
+import org.mybatis.generator.internal.DefaultShellCallback;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -24,7 +29,7 @@ public class TestUserMapper {
     @Test
     public void getUserList() {
         SqlSession session = MyBatisUtils.getSqlSession();
-        /**
+        /*
          * SqlSession 是一个 DefaultSqlSession 类，由 DefaultSqlSessionFactory 创建
          *
          * 获取代理对象时，首先调用 Configuration.mapperRegistry 的
@@ -109,7 +114,7 @@ public class TestUserMapper {
     @Test
     public void limit() {
         SqlSession session = MyBatisUtils.getSqlSession();
-        /**
+        /*
          * 通过 RowBounds 来进行分页处理
          * 这种方式不是很好，不建议使用，但是如果使用分页插件的话就需要使用这种方式
          * 如果项目不是很大，还是要使用 limit 的方式进行分页比较好
@@ -149,20 +154,20 @@ public class TestUserMapper {
     }
 
     @Test
-    public void getBlog(){
+    public void getBlog() {
         SqlSession session = MyBatisUtils.getSqlSession();
         BlogMapper mapper = session.getMapper(BlogMapper.class);
-        HashMap map = new HashMap<String,Object>();
+        HashMap<String, Object> map = new HashMap<>();
         List<String> authors = new ArrayList<>();
         authors.add("张浩");
         authors.add("景浩");
-        map.put("authors",authors);
-        map.put("title","java");
+        map.put("authors", authors);
+        map.put("title", "java");
         mapper.getBlog(map).forEach(System.out::println);
     }
 
     @Test
-    public void twoCache(){
+    public void twoCache() {
         SqlSession session = MyBatisUtils.getSqlSession();
         UserMapper mapper = session.getMapper(UserMapper.class);
         mapper.getUserList().forEach(System.out::println);
@@ -172,5 +177,22 @@ public class TestUserMapper {
         session = MyBatisUtils.getSqlSession();
         mapper = session.getMapper(UserMapper.class);
         mapper.getUserList().forEach(System.out::println);
+    }
+
+    @Test
+    public void testGenerator() {
+        List<String> warnings = new ArrayList<>();
+        boolean overwrite = true;
+        File configFile = new File("/home/zhanghao/IdeaProjects/Study/myBatis-01/src/main/resources/generatorConfig.xml");
+        ConfigurationParser configurationParser = new ConfigurationParser(warnings);
+        try {
+            Configuration configuration = configurationParser.parseConfiguration(configFile);
+            DefaultShellCallback callback = new DefaultShellCallback(overwrite);
+            MyBatisGenerator myBatisGenerator = new MyBatisGenerator(configuration,callback,warnings);
+            myBatisGenerator.generate(null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }
