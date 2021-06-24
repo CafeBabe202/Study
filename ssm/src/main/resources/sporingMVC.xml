@@ -9,6 +9,59 @@
        https://www.springframework.org/schema/context/spring-context.xsd
        http://www.springframework.org/schema/mvc
        https://www.springframework.org/schema/mvc/spring-mvc.xsd">
-    <mvc:annotation-driven />
+    <!--
+        这是是SpringMVC的配置文件，主要对MVC中的各种组件进行配置，其实这一部分最好还是使用注解，但是使用配置文件貌似更有感觉，更容易懂
+        使用注解开发很简单，但是容易让人云里雾里，不知为什么可以运行，也不知道为什么不可以运行。
+    -->
+    <!--添加注解驱动-->
+    <mvc:annotation-driven conversion-service="conversionService">
+        <!--添加返回json的支持，当一个方法返回一个对象时，将其转换成json-->
+        <mvc:message-converters>
+            <bean class="org.springframework.http.converter.StringHttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter"/>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
+    <!--设置包扫描路径-->
     <context:component-scan base-package="cn.happyOnion801.study.ssm.controller"/>
+
+    <!--配置拦截器-->
+    <mvc:interceptors>
+        <!--配置一个拦截器，你可以配置多个嘛-->
+        <mvc:interceptor>
+            <mvc:mapping path="/inter"/>
+            <mvc:exclude-mapping path="/index.jsp"/>
+            <bean class="cn.happyOnion801.study.ssm.controller.MyInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+
+    <!--配置一个默认的处理器映射器-->
+    <mvc:default-servlet-handler/>
+
+    <!-- 配置自己的异常处理器，自己的异常处理器必须是继承 HandlerExceptionResolver 才行-->
+    <bean class="cn.happyOnion801.study.ssm.utils.MyExpResolver"/>
+
+    <!--配置一个视图解析器，并配置前后缀，当一个collector返回一个字符串类型时，可以改自动拼接前后缀然后转发到相应的页面-->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix" value="WEB-INF/jsp/"/>
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+    <!--配置转换器，因为某些格式不能兼容，所以要自己写一个转换器类-->
+    <bean id="conversionService" class="org.springframework.context.support.ConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <!--配置一个日期转换类-->
+                <bean class="cn.happyOnion801.study.ssm.utils.DateConvertor"/>
+            </set>
+        </property>
+    </bean>
+
+    <!--配置文件上传的解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <!--这里可以对上传的文件进行一些配置，IDEA有相应的提示，自己根据name看看都是干嘛的，不懂就百度-->
+        <property name="maxInMemorySize" value="1024000"/>
+        <property name="maxUploadSize" value="5000000"/>
+    </bean>
+
 </beans>

@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<!--两种多对对一关系映射-->
+<!--两种一对多关系映射-->
 
 <mapper namespace="cn.happyOnion801.study.myBatis.dao.User2Mapper">
 

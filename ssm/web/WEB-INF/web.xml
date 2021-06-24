@@ -3,13 +3,23 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+    <!--
+        =================================================================================================
+        =  不知道为啥名，使用tomcat10就是启动不起来，昨天高了半天，就是不行，后来实在没办法，欢了tomcat版本就好了，神坑  =
+        =================================================================================================
+    -->
+
+    <!-- tomcat对这个项目的配置文件 -->
+    <!--添加启动监听，在tomcat启动时运行spring-->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+    <!--配置spring的配置文件路径-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring.xml</param-value>
     </context-param>
+    <!--配置springMVC的servlet，还有配置文件的路径-->
     <servlet>
         <servlet-name>mvc</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -17,10 +27,13 @@
             <param-name>contextConfigLocation</param-name>
             <param-value>classpath:sporingMVC.xml</param-value>
         </init-param>
+        <!--设置加载级别-->
         <load-on-startup>1</load-on-startup>
     </servlet>
+    <!--设置DispatcherServlet的拦截路径-->
     <servlet-mapping>
         <servlet-name>mvc</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
 </web-app>

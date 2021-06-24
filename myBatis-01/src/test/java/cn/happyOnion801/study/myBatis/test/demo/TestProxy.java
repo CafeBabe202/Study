@@ -1,43 +1,42 @@
 package cn.happyOnion801.study.myBatis.test.demo;
 
+
 import org.junit.Test;
 
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.Map;
 
-class MyHandler implements InvocationHandler {
-
-    @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-        return null;
-    }
+interface Function {
+    double getValue(double x);
 }
 
-class Demo{
-    public void say(String name){
-        System.out.println("I'm" + name);
+class MyFun implements Function {
+
+    @Override
+    public double getValue(double x) {
+        return Math.sin(x) / Math.cos(x);
     }
 }
 
 public class TestProxy {
 
     @Test
-    public void demo(){
-        Class<Demo> demo = Demo.class;
-        Method[] methods = demo.getMethods();
-        MyHandler handler = new MyHandler();
-        for (int i = 0; i < methods.length; i++) {
-            if(methods[i].getName() == "say"){
-                try {
-                    methods[i].invoke(handler,"zhangaho");
-                } catch (IllegalAccessException e) {
-                    e.printStackTrace();
-                } catch (InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+    public void test() {
+        boolean[][] res = new boolean[1020][1005];
+        MyFun myFun = new MyFun();
+        for (double i = 0.0; i < 10; i += 0.01) {
+            int r = (int) Math.round(myFun.getValue(i) * 100);
+            if (r < 0)
+                r = 0;
+            if (r > 1020 - 1) continue;
+            res[r][(int) (i * 100)] = true;
+        }
+        for (int i = 1020 - 1; i > 0; i--) {
+            for (int j = 0; j < 1005; j++) {
+                if (res[i][j])
+                    System.out.print("*");
+                else
+                    System.out.print(" ");
             }
+            System.out.println("");
         }
     }
 }

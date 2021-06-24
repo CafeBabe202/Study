@@ -9,7 +9,7 @@ import java.io.InputStream;
 public class MyBatisUtil {
     private static SqlSessionFactory sqlSessionFactory;
 
-    public MyBatisUtil(){
+    public MyBatisUtil() {
         try {
             InputStream is = MyBatisUtil.class.getClassLoader().getResourceAsStream("myBatis.xml");
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(is);
@@ -18,7 +18,7 @@ public class MyBatisUtil {
         }
     }
 
-    public SqlSession getSqlSession(){
+    public SqlSession getSqlSession() {
         return sqlSessionFactory.openSession();
     }
 
