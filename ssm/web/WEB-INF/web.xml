@@ -10,15 +10,18 @@
     -->
 
     <!-- tomcat对这个项目的配置文件 -->
+
     <!--添加启动监听，在tomcat启动时运行spring-->
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
+
     <!--配置spring的配置文件路径-->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>classpath:spring.xml</param-value>
     </context-param>
+
     <!--配置springMVC的servlet，还有配置文件的路径-->
     <servlet>
         <servlet-name>mvc</servlet-name>
@@ -30,6 +33,7 @@
         <!--设置加载级别-->
         <load-on-startup>1</load-on-startup>
     </servlet>
+
     <!--设置DispatcherServlet的拦截路径-->
     <servlet-mapping>
         <servlet-name>mvc</servlet-name>
