@@ -26,6 +26,7 @@ import java.util.Map;
 @Log4j
 public class TestUserMapper {
 
+
     @Test
     public void getUserList() {
         SqlSession session = MyBatisUtils.getSqlSession();

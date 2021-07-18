@@ -7,11 +7,11 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
                            http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
-    <!--配置USer对象创建-->
+    <!--配置User对象创建-->
     <!-- bean中的属性
-    id： 给你的对象取一个别名，对象的标识
-    class： 类的全路径
-    name： 作用与id相似，name中可以添加特殊符号，但是id不能    ==不常用，现在用id==
+        id： 给你的对象取一个别名，对象的标识
+        class： 类的全路径
+        name： 作用与id相似，name中可以添加特殊符号，但是id不能    ==不常用，现在用id==
     -->
     <!--默认使用无参构造-->
     <bean id="user" class="cn.happyonion801.study.spring.bean.User"/>
@@ -86,7 +86,7 @@
         <property name="name" value="张浩"/>
         <property name="gender" value="男"/>
         <property name="dept">
-            <bean id="dept1" class="cn.happyonion801.study.spring.bean.Dept">
+            <bean class="cn.happyonion801.study.spring.bean.Dept">
                 <property name="name" value="财务部"/>
             </bean>
         </property>
@@ -213,7 +213,9 @@
     <bean id="dept" class="cn.happyonion801.study.spring.bean.Dept">
         <property name="name" value="自动注入"/>
     </bean>
-    <bean id="emp3" class="cn.happyonion801.study.spring.bean.Emp" autowire="byName"/>
+    <bean id="emp3" class="cn.happyonion801.study.spring.bean.Emp">
+        <property name="dept" ref="dept"/>
+    </bean>
 
     <!--bean管理-->
     <!--引入外部properties文件

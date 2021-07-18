@@ -9,11 +9,11 @@ import java.io.InputStream;
 
 public class MyBatisUtils {
     /**
-     * MyBatis的核心是SqlSessionFactory和SqlSession
-     * 可一使用SqlSessionFactoryBuilder通过配置文件来创建一个SqlSessionFactory
-     * SqlSessionFactory可以用来创建SqlSession
-     * SqlSession类型PrepareStatement，可以用来对数据库进操作
-     * SqlSession的getMapper方法可以直接返回配置好的Dao接口的一个实体类
+     * MyBatis 的核心是 SqlSessionFactory 和 SqlSession
+     * 可一使用 SqlSessionFactoryBuilder 通过配置文件来创建一个 SqlSessionFactory
+     * SqlSessionFactory 可以用来创建 SqlSession
+     * SqlSession 类型 PrepareStatement，可以用来对数据库进操作
+     * SqlSession 的 getMapper 方法可以直接返回配置好的 Dao 接口的一个实体类
      *
      * 生命周期和作用域
      * SqlSessionFactoryBuilder 只是用来构建 SqlSessionFactory 的一个工具，只要 SqlSessionFactory 构建完成之后就不再需要了
@@ -39,17 +39,23 @@ public class MyBatisUtils {
              */
             SqlSessionFactoryBuilder sqlSessionFactoryBuilder = new SqlSessionFactoryBuilder();
             /**
-             * SqlSessionFactoryBuilder通过Build方法传入一个流对象
+             * SqlSessionFactoryBuilder 通过 Build 方法传入一个流对象
+             * SqlSessionFactoryBuilder 的主要作用就是通过传入的流对象来解析出 Configuration 和其中的 Environment 对象
+             *      Configuration 中封装了你的配置文件中的所有配置选项
+             *      Environment 中封装了数据源信息：
+             *          private final String id
+             *          private final TransactionFactory transactionFactory
+             *          private final DataSource dataSource
              *
              * 调用 SqlSessionFactoryBuilder 的
              *      SqlSessionFactory build(InputStream inputStream, String environment, Properties properties)
              *      environment 和 properties 使用 null
              *
-             * 然后，使用 environment 和 properties 通过
+             * 然后，通过
              *      XMLConfigBuilder(InputStream inputStream, String environment, Properties props)
              *      XMLConfigBuilder(XPathParser parser, String environment, Properties props)
              *      方法来创建一个 XMLConfigBuilder 对象来解析 xml 文件
-             *      XPathParser 和 XNode 真正封装了解析 xml 文件的工作，
+             *      XPathParser 和 XNode 真正封装了解析 xml 文件的工作
              *
              * XMLConfigBuilder 的
              *      Configuration parse()
@@ -67,6 +73,8 @@ public class MyBatisUtils {
 
     public static SqlSession getSqlSession(){
         /**
+         * SqlSession 是对 JDBC 中 Connection 的高级抽象
+         *
          * SqlSession 实际上一个 DefaultSqlSessionFactory 对象，由 SqlSessionFactoryBuilder 的
          *      SqlSessionFactory build(Configuration config)
          *      方法通过 XPathParser 解析出来的 Configuration 创建

@@ -11,7 +11,16 @@
       </configuration>
     </facet>
     <facet type="Spring" name="Spring">
-      <configuration />
+      <configuration>
+        <fileset id="fileset" name="Spring Application Context" removed="false">
+          <file>file://$MODULE_DIR$/src/main/resources/bean.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/jdbc.xml</file>
+          <file>file://$MODULE_DIR$/src/main/resources/aop.xml</file>
+          <file>file://$MODULE_DIR$/src/main/java/cn/happyonion801/study/spring/config/Jdbc.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/cn/happyonion801/study/spring/config/Aop.java</file>
+          <file>file://$MODULE_DIR$/src/main/java/cn/happyonion801/study/spring/config/Config.java</file>
+        </fileset>
+      </configuration>
     </facet>
   </component>
   <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_11">
