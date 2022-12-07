@@ -1,6 +1,6 @@
+import cn.happyonion801.study.spring.aop.UserDao;
 import cn.happyonion801.study.spring.aop.UserDaoImpl;
 import cn.happyonion801.study.spring.bean.*;
-import cn.happyonion801.study.spring.bean.dao.UserDao;
 import cn.happyonion801.study.spring.bean.dao.UserService;
 import cn.happyonion801.study.spring.config.Aop;
 import cn.happyonion801.study.spring.config.Config;
@@ -18,7 +18,7 @@ public class Main {
     }
 
     @Test
-    public void factory(){
+    public void factory() {
         ApplicationContext context = new ClassPathXmlApplicationContext("bean.xml");
         System.out.println(context.getBean("reader1", Reader.class));
         System.out.println(context.getBean("reader2", Reader.class));
@@ -136,32 +136,32 @@ public class Main {
     public void main17() {
         ApplicationContext context = new ClassPathXmlApplicationContext("bean.xml");
         UserDao userDao = context.getBean("userDao1", UserDao.class);
-        userDao.add();
+        userDao.add(1, 2);
     }
 
     @Test //使用注解进行属性注入
-    public void main18(){
+    public void main18() {
         ApplicationContext context = new ClassPathXmlApplicationContext("bean.xml");
         UserService userService = context.getBean("userService", UserService.class);
         userService.add();
     }
 
     @Test //使用完全注解开发
-    public void main19(){
+    public void main19() {
         ApplicationContext context = new AnnotationConfigApplicationContext(Config.class);
         UserService userService = context.getBean("userService", UserService.class);
         userService.add();
     }
 
     @Test //AOP xml
-    public void main20(){
+    public void main20() {
         ApplicationContext context = new ClassPathXmlApplicationContext("aop.xml");
         UserDaoImpl userDao = context.getBean("userDaoImpl", UserDaoImpl.class);
         userDao.add();
     }
 
     @Test //完全注解
-    public void main21(){
+    public void main21() {
         ApplicationContext context = new AnnotationConfigApplicationContext(Aop.class);
         UserDaoImpl userDao = context.getBean(UserDaoImpl.class);
         userDao.add();

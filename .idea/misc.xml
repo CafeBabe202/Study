@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
-    <file type="web" url="file://$PROJECT_DIR$/spring-01" />
+    <file type="web" url="file://$PROJECT_DIR$/spring" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
-        <option value="$PROJECT_DIR$/myBatis-01/pom.xml" />
         <option value="$PROJECT_DIR$/ssm/pom.xml" />
-        <option value="$PROJECT_DIR$/spring-01/pom.xml" />
         <option value="$PROJECT_DIR$/springBoot/pom.xml" />
+        <option value="$PROJECT_DIR$/spring/pom.xml" />
+        <option value="$PROJECT_DIR$/mybatis/pom.xml" />
       </list>
     </option>
   </component>
