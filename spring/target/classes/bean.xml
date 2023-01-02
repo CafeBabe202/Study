@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+    <!--配置User对象创建-->
+    <!-- bean中的属性
+        id： 给你的对象取一个别名，对象的标识
+        class： 类的全路径
+        name： 作用与id相似，name中可以添加特殊符号，但是id不能    ==不常用，现在用id==
+    -->
+    <!--默认使用无参构造-->
+    <bean id="user" class="cn.happyonion801.study.spring.bean.User"/>
+
+    <!--
+        这是一个声明一个工厂类对象，spring并不会创建他的对象，但是你可以使用你自己的工厂来创建bean对象
+        使用factory-method来声明使用这个方法来创建对象，该方法必须是static方法
+    -->
+    <bean id="ChineseBook" class="cn.happyonion801.study.spring.factory.BookFactory" factory-method="getChineseBook"/>
+    <!--没错，你可以声明两个方法来创创建两种不同的bean-->
+    <bean id="EnglishBook" class="cn.happyonion801.study.spring.factory.BookFactory" factory-method="getEnglishBook"/>
+
+    <!--创建一个read对象-->
+    <bean id="reader1" class="cn.happyonion801.study.spring.bean.Reader">
+        <!--配置book属性，指定使用刚刚声明的bookFactory创建对象-->
+        <property name="book" ref="ChineseBook"/>
+    </bean>
+    <!--然后来使用不同的方法创建不同的bean对象-->
+    <bean id="reader2" class="cn.happyonion801.study.spring.bean.Reader">
+        <!--配置book属性，指定使用刚刚声明的bookFactory创建对象-->
+        <property name="book" ref="EnglishBook"/>
+    </bean>
+
+    <!--属性注入-->
+    <!--DI是IOC的具体实现，就是注入属性-->
+    <!--使用set方式进行注入-->
+    <bean id="book1" class="cn.happyonion801.study.spring.bean.Book">
+        <!--使用property标签
+        name : 属性名
+        value : 注入的值
+        -->
+        <property name="name" value="书名1"/>
+        <property name="author" value="张浩"/>
+    </bean>
+    <!--使用构造器进行注入-->
+    <bean id="book2" class="cn.happyonion801.study.spring.bean.Book">
+        <constructor-arg name="name" value="书名2"/>
+        <constructor-arg name="author" value="张浩"/>
+    </bean>
+    <!--使用set进行注入：简化：了解-->
+    <!--前提：在配置中添加命名空间-->
+    <bean id="book3" class="cn.happyonion801.study.spring.bean.Book" p:name="书名3" p:author="张浩"/>
+
+    <!--字面量： 使用固定值-->
+    <!--设置null-->
+    <bean id="book4" class="cn.happyonion801.study.spring.bean.Book">
+        <property name="name" value="书名4"/>
+        <property name="author">
+            <null/>
+        </property>
+    </bean>
+    <!--设置包含特殊符号的值-->
+    <bean id="book5" class="cn.happyonion801.study.spring.bean.Book">
+        <!--使用转义符号-->
+        <property name="name" value="&lt;&lt;书名5&gt;&gt;"/>
+        <!--使用CDATA-->
+        <property name="author">
+            <value><![CDATA[<<张浩>>]]]></value>
+        </property>
+    </bean>
+    <!--注入外部bean-->
+    <bean id="user1" class="cn.happyonion801.study.spring.bean.User">
+        <property name="name" value="张浩"/>
+    </bean>
+    <bean id="book6" class="cn.happyonion801.study.spring.bean.Book">
+        <property name="name" value="书名6"/>
+        <property name="author" value="张浩"/>
+        <property name="user" ref="user1"/>
+    </bean>
+    <!--注入内部bean-->
+    <bean id="emp1" class="cn.happyonion801.study.spring.bean.Emp">
+        <property name="name" value="张浩"/>
+        <property name="gender" value="男"/>
+        <property name="dept">
+            <bean class="cn.happyonion801.study.spring.bean.Dept">
+                <property name="name" value="财务部"/>
+            </bean>
+        </property>
+    </bean>
+    <!--级联赋值-->
+    <bean id="dept2" class="cn.happyonion801.study.spring.bean.Dept">
+        <property name="name" value="安保部"/>
+    </bean>
+    <bean id="emp2" class="cn.happyonion801.study.spring.bean.Emp">
+        <property name="name" value="张浩"/>
+        <property name="gender" value="男"/>
+        <property name="dept" ref="dept2"/>
+        <!--要设置Emp的getDept方法才行，只有可以获取dept才能进行赋值-->
+        <property name="dept.name" value="技术部"/>
+    </bean>
+    <!--注入集合-->
+    <bean id="stu1" class="cn.happyonion801.study.spring.bean.Stu">
+        <!--注入数组-->
+        <property name="course">
+            <array>
+                <value>语文</value>
+                <value>数学</value>
+            </array>
+        </property>
+        <!--注入set-->
+        <property name="set">
+            <set>
+                <value>ele1</value>
+                <value>ele2</value>
+            </set>
+        </property>
+        <!--注入list-->
+        <property name="list">
+            <list>
+                <value>list1</value>
+                <value>list2</value>
+            </list>
+        </property>
+        <!--注入map-->
+        <property name="map">
+            <map>
+                <entry key="k1" value="v1"/>
+                <entry key="k2" value="v2"/>
+            </map>
+        </property>
+    </bean>
+    <!--在集合中注入对象-->
+    <bean id="stu2" class="cn.happyonion801.study.spring.bean.Stu">
+        <property name="list" ref="list"/>
+        <property name="books">
+            <list>
+                <ref bean="book1"/>
+            </list>
+        </property>
+    </bean>
+    <!--将集合单独提取出来-->
+    <!--首先添加util命名空间-->
+    <util:list id="list">
+        <value>list1</value>
+        <value>list2</value>
+    </util:list>
+
+
+    <!--在spring中有两种bean：一种是普通bean，另一种是工厂bean-->
+    <!--
+        普通bean：返回的类型与xml中定义的一样
+        工厂bean：返回的类型与返回的类型可以不一样
+    -->
+    <!--演示工厂bean-->
+    <!--
+        创建一个bean，实现FactoryBean
+        实现接口中的方法，在实现的方法中定义返回值
+    -->
+    <bean id="myBean1" class="cn.happyonion801.study.spring.bean.MyBean"/>
+
+    <!--bean的作用域： 可以设置是单实例还是多实例对象；默认是单实例对象==获取多个对象的地址相同==-->
+    <!--scope属性值
+        singleton 单实例 加载配置文件时创建对象 默认
+        prototype 多实例 在获取对象时才创建对象
+        requests
+        session
+    -->
+    <!--设置多实例对象-->
+    <bean id="book7" class="cn.happyonion801.study.spring.bean.Book" scope="prototype"/>
+
+    <!--bean的生命周期：==从对象创建到销毁的生命周期==
+        1、通过构造器创建对象
+        2、为bean设置属性和其他bean的引用 ==通过set方法==
+        3、调用bean的初始化方法 ==需要进行配置==
+        4、bean可以使用了
+        5、当容器关闭时，调用bean的销毁方法 == 需要进行配置==
+    -->
+    <!--演示bean的生敏周期-->
+    <bean id="orders1" class="cn.happyonion801.study.spring.bean.Orders" init-method="initMethod"
+          destroy-method="destroyMethod">
+        <property name="name" value="phone"/>
+    </bean>
+    <!--bean的后置处理器 ==添加后置处理后的生命周期==
+        1、通过构造器创建对象
+        2、为bean设置属性和其他bean的引用 ==通过set方法==
+        3、把bean实例传递给bean的后置处理器 ==postProcessBeforeInitialization()==
+        4、调用bean的初始化方法 ==需要进行配置==
+        5、把bean实例传递给bean的后置处理器 ==postProcessAfterInitialization()==
+        6、bean可以使用了
+        6、当容器关闭时，调用bean的销毁方法 == 需要进行配置==
+    -->
+    <!--演示后置处理器-->
+    <!--创建后置处理器：
+        1、实现BeanPostProcessor
+        2、实现方法
+    -->
+    <!--配置后置处理器 ==创建后置处理器后会为所有对象都使用后置处理器== -->
+    <bean id="myBeanPost1" class="cn.happyonion801.study.spring.bean.MyBeanPost"/>
+
+    <!--自动装配-->
+    <!--什么是自动装配
+        根据指定的装配规则（属性名称，或者属性类型），Spring自动将匹配的属性值进行自动注入
+    -->
+    <!--autowire
+        byName 根据名称注入，注入的bean的值和类型的名称一样
+        byType 根据类型注入，对应类型的bean只能有一个才行
+    -->
+    <!--演示-->
+    <bean id="dept" class="cn.happyonion801.study.spring.bean.Dept">
+        <property name="name" value="自动注入"/>
+    </bean>
+    <bean id="emp3" class="cn.happyonion801.study.spring.bean.Emp">
+        <property name="dept" ref="dept"/>
+    </bean>
+
+    <!--bean管理-->
+    <!--引入外部properties文件
+        1、添加context命名空间
+        2、创建一个properties文件
+        3、将properties文件引入xml
+        4、使用变量表达式代替固定值
+    -->
+    <!--演示-->
+    <context:property-placeholder location="classpath:demo.properties"
+                                  file-encoding="UTF-8"/>
+    <bean id="book8" class="cn.happyonion801.study.spring.bean.Book">
+        <property name="name" value="${bookName}"/>
+        <property name="author" value="${authorName}"/>
+    </bean>
+
+    <!--什么是注解
+        1、注解是代码的特殊标记
+        2、注解可以作用在类、方法、属性上边
+        3、使用注解简化xml配置
+    -->
+    <!--Spring针对bean管理中的注解
+        1、@Component
+        2、@Service
+        3、@Controller
+        4、@Repository
+    -->
+    <!--上边四个功能是一样的，都可以用来创建bean对象-->
+    <!--使用注解
+        1、添加aop依赖
+        2、开启组件扫面 （要添加context命名空间）
+    -->
+    <!--开启组件扫描-->
+    <!--想要扫描多个包，可以使用逗号分开-->
+    <context:component-scan
+            base-package="cn.happyonion801.study.spring.bean.dao"/>
+    <!--组件扫面的细节配置
+        use-default-filters="false" 设置默认全部不扫描
+        context:include-filter 设置扫描那些
+        type 设置过滤方式 ==annotation：基于注解的进行过滤==
+        expression 设置符合过滤的条件 ==org.springframework.stereotype.Component：制定的注解类==
+    -->
+    <context:component-scan base-package="cn.happyonion801.study.spring.bean.dao" use-default-filters="false">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+    <!--
+        不设置use-default-filters默认是true，默认全部扫描
+        context:exclude-filter 设置不扫描那些
+        type 同上
+        expression 同上
+    -->
+    <context:component-scan base-package="cn.happyonion801.study.spring.bean.dao">
+        <context:exclude-filter type="annotation" expression="org.springframework.stereotype.Component"/>
+    </context:component-scan>
+    <!--基于注解的属性注入
+        @AutoWired 根据类型进行自动注入
+        @Qualifier 根据名称进行自动注入 ==要和@AutoWired一起使用==
+        @Resource 既可以根据属性类型进行注入，又可以根据名称进行注入
+        @Value 注入普通类型属性
+    -->
+
+    <!--完全注解开发
+        创建配置类，用来替代xml文件
+    -->
+
+</beans>
