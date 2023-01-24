@@ -11,9 +11,10 @@ import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import java.io.IOException;
 
 
-// 任务的总流程，应该都差不多吧，八股
+// 任务的总流程，都差不多吧，八股
 public class WorkCountDriver {
     public static void main(String[] args) throws IOException, InterruptedException, ClassNotFoundException {
+
         // 创建 job 对象
         Configuration configuration = new Configuration();
         Job job = Job.getInstance(configuration);
